@@ -1,0 +1,32 @@
+.placeContainer {
+    width: 800px;
+    height: auto;
+    background-color: white;
+    border: 0 solid white;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.placeImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 0 solid white;
+    border-radius: 30px;
+}
+
+.placeInfo {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid grey;
+}
+
+.placeButtons {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
