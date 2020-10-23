@@ -1,0 +1,28 @@
+.userCardContainer a {
+    text-decoration: none;
+}
+
+.userInfo {
+    padding-left: 30px;
+}
+
+.userCardContainer {
+    width: 400px;
+    height: 200px;
+    background-color: #291e09;
+    border: 0 solid white;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.5s;
+}
+
+.userCardContainer:hover {
+    background-color: yellow;
+    transition: 0.5s;
+}
+
+.userCardContainer:hover .userInfo p {
+    color: #000;
+}
