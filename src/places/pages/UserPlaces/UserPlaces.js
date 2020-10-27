@@ -1,38 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 //importing components
 import PlaceList from "../../components/PlaceList/PlaceList";
-import { useParams } from 'react-router-dom';
-
-const DUMMY_PLACES = [
-    {
-        id: 'p1',
-        title: 'Place title',
-        description: 'Place description',
-        image: 'https://images.pexels.com/photos/3787903/pexels-photo-3787903.jpeg?cs=srgb&dl=pexels-bongkarn-thanyakij-3787903.jpg&fm=jpg',
-        address: 'Nowhere',
-        creatorId: 'u1',
-        coordinates: {
-            lat: -34.397,
-            lng: 150.644
-        }
-    },
-    {
-        id: 'p1',
-        title: 'Place title',
-        description: 'Place description',
-        image: 'https://images.pexels.com/photos/3787903/pexels-photo-3787903.jpeg?cs=srgb&dl=pexels-bongkarn-thanyakij-3787903.jpg&fm=jpg',
-        address: 'Nowhere',
-        creatorId: 'u2',
-        coordinates: 'Somwhere'
-    }
-]
+import ErrorModal from "../../../shared/components/Modal/ErrorModal";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner/LoadingSpinner";
+//import custom hook
+import { useHttpClient } from "../../../shared/hooks/http-hook";
 
 const UserPlaces = () => {
+
+    const [loadedPlaces, setLoadedPlaces] = useState();
+    const {isLoading, error, sendRequest, clearError} = useHttpClient();
+
     const userId = useParams().userID;
-    const loadedPlaces = DUMMY_PLACES.filter( place => place.creatorId === userId );
+
+    useEffect(() => {
+        const getPlaces = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/api/places/user/${userId}`);
+                setLoadedPlaces(responseData.places);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        getPlaces();
+    }, [sendRequest, userId])
+
+    //const loadedPlaces = DUMMY_PLACES.filter( place => place.creatorId === userId );
     return (
         <div className='center'>
-            <PlaceList items={loadedPlaces}/>
+            {isLoading && <LoadingSpinner asOverlay/>}
+            <ErrorModal error={error} onClear={clearError}/>
+            {!isLoading && loadedPlaces && <PlaceList items={loadedPlaces}/>}
         </div>
     );
 };

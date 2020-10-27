@@ -1,6 +1,6 @@
 .placeContainer {
     width: 800px;
-    height: auto;
+    max-height: 800px;
     background-color: white;
     border: 0 solid white;
     border-radius: 30px;
@@ -13,8 +13,9 @@
 }
 
 .placeImage img {
-    width: 100%;
-    height: 100%;
+    margin-top: 10px;
+    width: auto;
+    max-height: 400px;
     object-fit: cover;
     border: 0 solid white;
     border-radius: 30px;

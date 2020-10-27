@@ -1,0 +1,27 @@
+.auth {
+    position: relative;
+    text-align: center;
+    margin: 0 auto;
+    padding: 1rem;
+    max-width: 40rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background: white;
+}
+
+.auth input {
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.auth button {
+    margin-top: 15px;
+}
+
+.auth button:nth-child(2) {
+    margin-bottom: 10px;
+}

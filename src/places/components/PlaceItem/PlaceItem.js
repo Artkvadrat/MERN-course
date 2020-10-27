@@ -52,8 +52,8 @@ const PlaceItem = ({place}) => {
                         loadingElement={<div style={{ height: `100%` }} />}
                         containerElement={<div style={{ height: `400px` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
-                        lat={coordinates.lat}
-                        lng={coordinates.lng}
+                        lat={50.444291}
+                        lng={30.3850894}
                     />
                 </div>
             </Modal>

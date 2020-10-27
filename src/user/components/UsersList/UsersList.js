@@ -4,6 +4,16 @@ import './UsersList.css'
 import UserItem from "../UserItem/UserItem";
 import Card from "../../../shared/components/Card/Card";
 
+/*
+*
+* Receive an array of users and transform it in array
+* of <li> tags with data through <UserItem/> component
+*
+* @param {items} array
+* @return <ul> component
+*
+* */
+
 const UserList = ({items}) => {
     if (items.length === 0) {
         return (
