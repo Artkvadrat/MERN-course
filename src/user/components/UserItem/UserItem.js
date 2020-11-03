@@ -23,7 +23,7 @@ const UserItem = ({data}) => {
     const {id, name, image, places } = data;
     return (
         <li key={id} className='userCardContainer'>
-            <Link to={`/${id}/places`}>
+            <Link to={`/api/places/user/${id}`}>
                 <div className='userCard'>
                     <Card>
                         <div className='userImage'>

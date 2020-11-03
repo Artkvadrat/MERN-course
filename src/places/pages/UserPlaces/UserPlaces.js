@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import PlaceList from "../../components/PlaceList/PlaceList";
 import ErrorModal from "../../../shared/components/Modal/ErrorModal";
 import LoadingSpinner from "../../../shared/components/LoadingSpinner/LoadingSpinner";
+import Button from "../../../shared/components/FormElements/Button/Button";
 //import custom hook
 import { useHttpClient } from "../../../shared/hooks/http-hook";
 
@@ -19,14 +20,14 @@ const UserPlaces = () => {
             try {
                 const responseData = await sendRequest(`http://localhost:5000/api/places/user/${userId}`);
                 setLoadedPlaces(responseData.places);
+                console.log(responseData);
             } catch (err) {
                 console.error(err);
             }
         }
         getPlaces();
-    }, [sendRequest, userId])
+    }, [sendRequest, userId]);
 
-    //const loadedPlaces = DUMMY_PLACES.filter( place => place.creatorId === userId );
     return (
         <div className='center'>
             {isLoading && <LoadingSpinner asOverlay/>}

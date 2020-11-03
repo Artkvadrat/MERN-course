@@ -37,10 +37,10 @@ const App = () => {
                 <Route path="/places/new">
                     <NewPlace/>
                 </Route>
-                <Route path="/:userID/places" exact>
+                <Route path="/api/places/user/:userID" exact>
                     <UserPlaces/>
                 </Route>
-                <Route path="/places/:placeId" exact>
+                <Route path="/api/places/:placeId" exact>
                     <UpdatePlace/>
                 </Route>
                 <Redirect to='/'/>

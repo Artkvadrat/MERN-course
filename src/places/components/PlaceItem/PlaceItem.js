@@ -1,8 +1,13 @@
 import React, { useState, useContext } from 'react';
 import './PlaceItem.css';
+import { useHistory } from 'react-router-dom';
+//import custom hooks
+import { useHttpClient } from "../../../shared/hooks/http-hook";
 //importing components
 import Button from "../../../shared/components/FormElements/Button/Button";
 import Modal from "../../../shared/components/Modal/Modal";
+import ErrorModal from "../../../shared/components/Modal/ErrorModal";
+import LoadingSpinner from "../../../shared/components/LoadingSpinner/LoadingSpinner";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps";
 //importing context
 import { AuthContext } from "../../../shared/context/auth-context";
@@ -20,12 +25,17 @@ const PlaceItem = ({place}) => {
 
     const auth = useContext(AuthContext);
 
+    const history = useHistory();
+    console.log(place);
     const {id,
         image,
         title,
         description,
         address,
-        coordinates } = place;
+        location,
+        creator} = place;
+
+    const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
     const [showMap, setShowMap] = useState(false);
     const openMapHandler = ( ) => setShowMap(true);
@@ -34,9 +44,25 @@ const PlaceItem = ({place}) => {
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const openConfirmModalHandler = ( ) => setShowConfirmModal(true);
     const closeConfirmModalHandler = ( ) => setShowConfirmModal(false);
-    const confirmDeleting = ( ) => {
+
+    const [isDeleted, setIsDeleted] = useState(false);
+    const openIsDeletedModal = () => setIsDeleted(true);
+    const closeIsDeletedModal = () => {
+        history.push(`http://localhost:3000/api/places/user/${auth.userId}`);
+        setIsDeleted(false);
+    }
+
+    const confirmDeleting = async () => {
         closeConfirmModalHandler();
-        console.log('Deleting...')
+        try {
+            await sendRequest(
+                `http://localhost:5000/api/places/${id}`,
+                'DELETE'
+            );
+            openIsDeletedModal();
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     return (
@@ -52,8 +78,8 @@ const PlaceItem = ({place}) => {
                         loadingElement={<div style={{ height: `100%` }} />}
                         containerElement={<div style={{ height: `400px` }} />}
                         mapElement={<div style={{ height: `100%` }} />}
-                        lat={50.444291}
-                        lng={30.3850894}
+                        lat={location.lat}
+                        lng={location.lng}
                     />
                 </div>
             </Modal>
@@ -68,6 +94,17 @@ const PlaceItem = ({place}) => {
                    }>
                 <p>Do you want to proceed and delete this place?</p>
             </Modal>
+            <Modal show={isDeleted}
+                   onCancel={closeIsDeletedModal}
+                   header='Deleted successfully'
+                   footer={
+                       <React.Fragment>
+                           <Button inverse onClick={closeIsDeletedModal}>CLOSE</Button>
+                       </React.Fragment>
+                   }>
+            </Modal>
+            {error && <ErrorModal error={error} onClear={clearError}/>}
+            {isLoading && <LoadingSpinner asOverlay/>}
             <li key={id} className='placeContainer'>
                 <div className="placeImage">
                     <img src={ image } alt={ title } />
@@ -79,9 +116,9 @@ const PlaceItem = ({place}) => {
                 </div>
                 <div className='placeButtons'>
                     <Button inverse onClick={openMapHandler}>VIEW ON MAP</Button>
-                    {auth.isLoggedIn && (
+                    {auth.userId === creator && (
                         <React.Fragment>
-                            <Button to={`/places/${id}`}>EDIT</Button>
+                            <Button to={`/api/places/${id}`}>EDIT</Button>
                             <Button danger onClick={openConfirmModalHandler}>DELETE</Button>
                         </React.Fragment>
                     )}
